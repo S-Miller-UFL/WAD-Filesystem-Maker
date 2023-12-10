@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <GoogleTest>
+    <ParallelTestCount>1</ParallelTestCount>
+    <!-- Specify the test assembly (your test executable) -->
+    <TestBinary>$(TargetPath)</TestBinary>
+
+    <!-- Specify the test case/filter -->
+    <TestCaseFilter>*.cpp</TestCaseFilter>
+  </GoogleTest>
+</RunSettings>

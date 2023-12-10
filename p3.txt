@@ -1,0 +1,183 @@
+.TH Project 3
+.SH Name
+Project 3: File Systems
+.SH Synopsis
+Creating a library to allow a user to mount doom wad files as file systems
+.SH Description
+
+The project was started by picking my data structure, I chose an \fBnary tree\fR because its whats typically used in a file system
+
+The library functions are in \fBWad.cpp\fR
+.br
+These library functions are needed to allow the user to actually read from and write to WAD files.
+
+.TP
+The actual data structure is in \fBnary_tree.cpp\fR
+
+.TP
+The functions in \fBWad.cpp\fR are:
+
+.TP
+Wad::Wad(const std::string& path)
+.br
+Private constructor. Loads from the specified WAD file and builds the tree
+
+.TP
+Wad* Wad::loadWad(const std::string& path)
+.br
+Calls private constructor.
+
+.TP
+std::string Wad::getMagic()
+.br
+gets \fBmagic\fR descriptor of WAD file.
+
+.TP
+bool Wad::isContent(const std::string& path)
+.br
+Checks if specified path is a content file.
+
+.TP
+bool Wad::isDirectory(const std::string& path)
+.br
+Checks if specified path is directory
+
+.TP
+int Wad::getSize(const std::string& path)
+.br
+gets size of descriptor elements lump data.
+
+.TP
+int Wad::getContents(const std::string& path, char* buffer, int length, int offset)
+.br
+Reads descriptors lump data into \fBbuffer\fR.
+
+.TP
+int Wad::getDirectory(const std::string& path, std::vector<std::string>* directory)
+.br
+Gets children of specified directory.
+
+.TP
+void Wad::createDirectory(const std::string& path)
+.br
+Creates directory at specified path.
+
+.TP
+void Wad::createFile(const std::string& path)
+.br
+Creates blank file at specified path.
+
+.TP
+int Wad::writeToFile(const std::string& path, const char* buffer, int length, int offset)
+.br
+Writes file at specified path. File must be empty.
+
+.TP
+std::string Wad::create_stringfromstack(std::stack<std::string> stack)
+.br
+Private function, creates a string from a stack. Useful for representing directories.
+
+.TP
+std::stack<std::string >* Wad::create_stackfromstring(std::string string)
+.br
+Private function, creates stack from a string. Useful for representing directories.
+
+.TP
+void Wad::write_wadfile_descriptor(wad_struct* wad_file, uint32_t seekpointer)
+.br
+Private function, writes descriptors to WAD file.
+
+.TP
+The functions in \fBwadfs.cpp\fR are:
+
+.TP
+static int wadfs_get_attr(const char* wadfs_file_path, struct stat* wadfs_file_status)
+.br 
+Used by FUSE. Gets attributes of file.
+
+.TP
+static int wadfs_mknod(const char* wadfs_file_path, mode_t mode, dev_t rdev)
+.br
+Used by FUSE. Creates a new file at the specified path.
+
+.TP
+static int wadfs_mkdir(const char* wadfs_file_path, mode_t mode)
+.br
+Used by FUSE. Makes a new directory.
+
+.TP
+static int wadfs_read(const char* wadfs_file_path, char *buffer, size_t length, off_t offset, struct fuse_file_info* wadfs_fuse_fileinfostruct)
+.br
+Used by FUSE. Reads from a file.
+
+.TP
+static int wadfs_write(const char* wadfs_file_path, const char *buffer, size_t length, off_t offset, struct fuse_file_info* wadfs_fuse_fileinfostruct)
+.br
+Used by FUSE. Writes to a file. File must be blank.
+
+.TP
+static int wadfs_readdir(const char*wadfs_file_path, void* buffer, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info* wadfs_fuse_fileinfostruct)
+.br
+Used by FUSE. Reads contents of a directory.
+
+.TP
+static int wadfs_open(const char* wadfs_file_path, struct fuse_file_info* wadfs_fuse_fileinfostruct)
+.br
+Used by FUSE. Opens a specified file.
+
+.TP
+struct fuse_operations wadfs_operations
+.br
+Used by FUSE. Points fuse functions towards functions we created.
+
+.TP
+int main(int argc, char* argcv[])
+.br
+Main function. Takes in path to WAD file to load and directory to mount it to.
+
+.TP
+\fB Commands \fR
+
+.br
+
+1.\fBls <directory to mounted WAD file> -al\fR
+    This command lists information about the files inside the WAD directory.
+    This command was given by the project specifications.
+.br
+
+2.\fBfusermount -u <directory to mounted WAD file>\fR
+    This command unmounts our WAD file.
+    This command was given in the project specifications.
+
+.SH TESTING
+The WAD functions were tested using a testing file given to us.
+I also tested by mounting the WAD file using fuse, and performing various operations on it.
+
+.SH BUGS
+Creating a blank file using nano inside of the mounted directory, and then trying to write to that blank file will throw an error.
+This is due to the way that nano creates files. Even if the file appears blank, there is still some metadata associated with it.
+Meaning its not truly blank. So trying to write to it is not permitted.
+
+To circumvent this, you need to create a file in nano and write what you want to it. You cannot create a blank file then write to it
+afterwards.
+
+.SH LINK
+.br
+https://youtu.be/fArSJ5qmpjo
+
+.SH REFERENCES/CITATIONS
+.br
+1.https://www.cs.hmc.edu/~geoff/classes/hmc.cs137.201601/homework/fuse/fuse_doc.html
+.br
+2.https://www.cs.nmsu.edu/~pfeiffer/fuse-tutorial/html/callbacks.html
+.br
+3.https://www.youtube.com/watch?v=Fnfflm3_9kw
+.br
+4.https://engineering.facile.it/blog/eng/write-filesystem-fuse/
+.br
+5.https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/errno.h.html
+.br
+6.Special thanks to "Paladin", for explaining to me how a doom WAD file works.
+
+.SH Author
+Steven Miller

@@ -1,0 +1,9 @@
+﻿  Wad.cpp
+C:\Users\steve\source\cop4600\project 3\wad\wad\wad\libwad\Wad.cpp(68,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\steve\source\cop4600\project 3\wad\wad\wad\libwad\Wad.cpp(274,14): warning C4018: '>': signed/unsigned mismatch
+C:\Users\steve\source\cop4600\project 3\wad\wad\wad\libwad\Wad.cpp(278,18): warning C4018: '>': signed/unsigned mismatch
+C:\Users\steve\source\cop4600\project 3\wad\wad\wad\libwad\Wad.cpp(309,24): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  libtest_VS.cpp
+C:\Users\steve\source\cop4600\project 3\wad\wad\wad\libtest_VS.cpp(310,37): warning C4390: ';': empty controlled statement found; is this the intent?
+  Generating Code...
+  wad.vcxproj -> C:\Users\steve\source\cop4600\project 3\wad\wad\x64\Debug\wad.exe
